@@ -1,0 +1,46 @@
+# Whitelist .gitignore: ignore everything, then allow only your own files.
+# An extracted game file can never be committed by accident.
+*
+!*/
+
+# Allow: your code, docs and config (adjust to your project)
+!.gitignore
+!*.md
+!*.cs
+!*.csproj
+!*.sln
+!*.cpp
+!*.h
+!*.hpp
+!CMakeLists.txt
+!*.rs
+!Cargo.toml
+!Cargo.lock
+!*.py
+!*.ts
+!*.tsx
+!*.js
+!*.json
+!*.ps1
+!*.cmd
+!*.sh
+!*.ini
+!*.toml
+!*.yml
+!*.yaml
+!LICENSE*
+
+# Re-block game material even if it matches the allow-list above
+decomp/
+extracted/
+ghidra/
+assets-ripped/
+**/*.dll
+**/*.exe
+**/*.pak
+**/*.utoc
+**/*.ucas
+**/*.assets
+**/*.bundle
+**/*.xex
+**/*.iso
