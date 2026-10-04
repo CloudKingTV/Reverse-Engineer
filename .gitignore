@@ -1,0 +1,5 @@
+# Decompiled source and extracted game assets: local reference only, never commit or redistribute
+decomp/
+*.dll
+*.pdb
+global-metadata.dat
