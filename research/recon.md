@@ -1,6 +1,6 @@
 # Phase 0: Recon
 
-Status: **partial**. The game binaries (Pug\*.dll) are not available in this environment.
+Status: **partial**. The game binaries (Pug\*.dll) are not available in this environment. See "Source search" at the end for everything that was tried.
 
 ## Where I looked
 
@@ -44,3 +44,31 @@ Excluded by the importer, which suggests they exist in the game folder: `Assembl
 ## Licensing note
 
 The Mod SDK's EULA licenses it "solely for ... the creation of Mods" and forbids decompiling it without permission, except where law allows. So this project does **not** decompile anything from the SDK. The SDK was used only to read metadata (version files, package manifests, file names). The gameplay assemblies come from the game itself, whose own EULA governs them. The user should check that EULA before Phase 1.
+
+## Source search (round 2)
+
+### Legitimate sources found and used
+
+| Source | What it gives | Location (outside repo, not committed) |
+|---|---|---|
+| `Pugstorm/CoreKeeperModSDK` | Unity version, package versions, game assembly names | `/home/user/pugstorm/` |
+| `Pugstorm/CoreKeeperModDocs` (official, updated 2026-09-30) | Official modding docs and code examples (ECS systems, RPC, Burst hooks, data blocks), SDK changelogs up to 1.3.0.3 | `/home/user/oss/Pugstorm_CoreKeeperModDocs` |
+| `CoreKeeperMods/core-keeper-docs` | Community modding wiki | `/home/user/corekeepermods/` |
+| `CoreKeeperMods/CoreLib`, `limoka/CoreKeeperMods` (MIT), `Valgard/ck_mod_settings_menu` | Open-source mods that call the game API: **~250 real game type names and 75 hooked game methods** | `/home/user/oss/` |
+
+These produced [`index/api-surface-from-mods.md`](index/api-surface-from-mods.md), a name-only map of components, buffers, systems, authoring components, databases and hooked methods.
+
+### Blocked by this session's network policy (proxy 403; not circumvented)
+
+- Steam CDN / SteamCMD (`steamcdn-a.akamaihd.net`, `api.steamcmd.net`), which is the free dedicated-server route
+- Microsoft .NET downloads (`builds.dotnet.microsoft.com`). Workaround available: NuGet is reachable and hosts both `ilspycmd` (11.1) and the .NET runtime packs
+- Wikis: `core-keeper.fandom.com`, `corekeeper.atma.gg`, `corekeeper.wiki.gg`; also `mod.io`
+
+### Deliberately not used
+
+- Third-party forks or mirrors that may contain the game's own DLLs or decompiled source. Those are unlicensed redistributions of Pugstorm's code, and using them would break this project's ground rules.
+
+### Remaining routes to the actual gameplay code
+
+1. **Run locally:** `tools/local-recon.ps1` finds the Steam install, completes this recon (Unity version, backend, assembly sizes, packages) and, with `-Decompile`, exports the `Pug*`/`Assembly-CSharp` DLLs into the gitignored `decomp/`. It installs nothing.
+2. **Allow Steam hosts** in this environment's network settings (Custom → Allowed domains), then fetch the free dedicated server here with SteamCMD (needs approval to install SteamCMD).
